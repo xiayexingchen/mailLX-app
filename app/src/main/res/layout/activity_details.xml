@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.mail.DetailsActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="From" />
+
+            <EditText
+                android:id="@+id/afrom"
+                android:maxLines="1"
+                android:layout_width="match_parent"
+                android:background="@drawable/translucent_edit"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:editable="false"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="To" />
+
+            <EditText
+                android:id="@+id/ato"
+                android:maxLines="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/translucent_edit"
+                android:layout_marginTop="5dp"
+                android:editable="false"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="date" />
+
+            <EditText
+                android:id="@+id/adate"
+                android:maxLines="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/translucent_edit"
+                android:layout_marginTop="5dp"
+                android:editable="false"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Subject" />
+
+            <EditText
+                android:id="@+id/asubject"
+                android:maxLines="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/translucent_edit"
+                android:layout_marginTop="5dp"
+                android:editable="false"
+                />
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Content" />
+
+        <EditText
+            android:id="@+id/acontent"
+            android:layout_width="match_parent"
+            android:background="@drawable/translucent_edit"
+            android:gravity="left"
+            android:editable="false"
+            android:layout_height="300dp"
+            android:layout_marginTop="5dp" />
+    </LinearLayout>
+
+
+    </LinearLayout>
+</ScrollView>

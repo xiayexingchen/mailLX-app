@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <TextView
+                tools:text = "from:"
+                android:id="@+id/from"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                tools:text = "发送人"
+                android:id="@+id/sender_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <TextView
+            tools:text = "主题"
+            android:id="@+id/subject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="22dp"
+            android:maxLines="1"
+            android:maxLength="20"
+            android:ellipsize="end"
+            android:textStyle="bold"/>
+        <TextView
+            tools:text = "内容"
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:maxLength="30"
+            android:ellipsize="end"
+            />
+        <TextView
+            android:layout_marginBottom="5dp"
+            tools:text = "发送时间"
+            android:id="@+id/receiverDate"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
+
+    
+</LinearLayout>
