@@ -70,30 +70,6 @@
 
             <!--嵌套线性布局-->
             <LinearLayout
-                android:id="@+id/UserNameLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <!--用户名输入-->
-                <EditText
-                    android:id="@+id/UserNameEdit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/translucent_edit"
-                    android:hint="输入用户名"
-                    android:padding="15dp"
-                    android:singleLine="true"
-                    android:textSize="24dp" />
-
-            </LinearLayout>
-
-            <!--嵌套线性布局-->
-            <LinearLayout
                 android:id="@+id/PassWordLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

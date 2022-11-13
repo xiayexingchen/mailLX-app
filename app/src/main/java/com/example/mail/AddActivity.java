@@ -29,6 +29,7 @@ import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -95,8 +96,6 @@ public class AddActivity extends AppCompatActivity {
             }
         };
 
-        getNickName();
-
         SharedPreferencesUtil util = SharedPreferencesUtil.getInstance(AddActivity.this);
         tvFromAccount.setText(util.readString("user"));
 
@@ -105,6 +104,7 @@ public class AddActivity extends AppCompatActivity {
 
 
     }
+
 
     public void submit(View v) {
         String senderAddress = tvFromAccount.getText().toString();
@@ -120,62 +120,38 @@ public class AddActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                MediaType JSON = MediaType.parse("application/json;charset=utf-8");
-                JSONObject jsonObject = new JSONObject();
-                OkHttpClient httpClient = new OkHttpClient();
+                FormBody.Builder params = new FormBody.Builder();
                 try {
-                    jsonObject.put("senderAddress", senderAddress);
-                    jsonObject.put("reciverAddress", reciverAddress);
-                    jsonObject.put("subject", subject);
-                    jsonObject.put("content", content);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                RequestBody requestBody = RequestBody.create(JSON, String.valueOf(jsonObject));
-                String url = "http://"+ip+":8080/mail/sendMail";
-                Request request = new Request.Builder()
-                        .url(url)
-                        .post(requestBody)
-                        .build();
+                    params.add("senderAddress", senderAddress);
+                    params.add("reciverAddress", reciverAddress);
+                    params.add("subject", subject);
+                    params.add("content", content);
+                    String url = "http://10.68.127.124:8080/user/add-mail";
+                    Request request = new Request.Builder()
+                            .url(url)
+                            .post(params.build())
+                            .build();
 
-                Call call = httpClient.newCall(request);
-
-                Intent intent = new Intent(AddActivity.this, HomeActivity.class);
-                startActivity(intent);
-                call.enqueue(new Callback() {
-
-                    @Override
-                    public void onFailure(Call call, IOException e) {
+                    OkHttpClient httpClient = new OkHttpClient();
+                    Response response = httpClient.newCall(request).execute();
+                    String MyResult = response.body().string();
+                    JSONObject jsonObject1 = new JSONObject(MyResult);
+                    int code = jsonObject1.getInt("state");
+                    System.out.println(code);
+                    if (code == 200) {
+                        Intent intent = new Intent(AddActivity.this, HomeActivity.class);
+                        startActivity(intent);
                         Looper.prepare();
                         Toast.makeText(getApplicationContext(), ok, Toast.LENGTH_SHORT).show();
                         Looper.loop();
+                    } else {
+                        Looper.prepare();
+                        Toast.makeText(getApplicationContext(), err, Toast.LENGTH_SHORT).show();
+                        Looper.loop();
                     }
-
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        String MyResult = response.body().string();
-                        System.out.println(MyResult);
-                        try {
-                            JSONObject jsonObject1 = new JSONObject(MyResult);
-                            int code = jsonObject1.getInt("code");
-                            System.out.println(code);
-                            if (code == 200) {
-                                Intent intent = new Intent(AddActivity.this, HomeActivity.class);
-                                startActivity(intent);
-                                Looper.prepare();
-                                Toast.makeText(getApplicationContext(), ok, Toast.LENGTH_SHORT).show();
-                                Looper.loop();
-                            } else {
-                                Looper.prepare();
-                                Toast.makeText(getApplicationContext(), err, Toast.LENGTH_SHORT).show();
-                                Looper.loop();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }).start();
     }
@@ -185,7 +161,7 @@ public class AddActivity extends AppCompatActivity {
         String err = "网络错误";
         String empty = "空错误";
         SharedPreferencesUtil util = SharedPreferencesUtil.getInstance(AddActivity.this);
-        String account = util.readString("user");
+        String account = util.readString("username");
         new Thread(new Runnable() {
             @Override
             public void run() {

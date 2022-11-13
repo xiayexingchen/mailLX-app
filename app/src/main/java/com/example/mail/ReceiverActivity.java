@@ -74,18 +74,10 @@ public class ReceiverActivity extends AppCompatActivity implements AdapterView.O
                     System.out.println(str);
                     try {
                         Gson gson=new Gson();
-                        List<Mail> mails = gson.fromJson(str, new TypeToken<List<Mail>>(){}.getType());
-                        if(mails.size()!=0) {
-                            Collections.reverse(mails);
-                            mailList = new ArrayList<>();
-                            for(Mail i:mails) {
-                                mailList.add(i);
-                            }
-                            System.out.println(mailList.get(0));
-                            if(mails.size()!=0) {
-                                MyListDataAdapter adapter = new MyListDataAdapter();
-                                lv.setAdapter(adapter);
-                            }
+                        mailList = (List<Mail>) gson.fromJson(str, new TypeToken<List<Mail>>(){}.getType());
+                        if(mailList.size()!=0) {
+                            MyListDataAdapter adapter = new MyListDataAdapter();
+                            lv.setAdapter(adapter);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -109,8 +101,6 @@ public class ReceiverActivity extends AppCompatActivity implements AdapterView.O
 
     private void initData() {
         mailList = new ArrayList<Mail>();
-        mailList.add(new Mail("from.com", "to.com", Timestamp.valueOf("2022-11-11 14:00:00"), "欢迎使用邮件系统", "用户你好！这是一条系统初始化邮件，仅用用于测试用"));
-
     }
 
     private void freshData() {
@@ -125,7 +115,7 @@ public class ReceiverActivity extends AppCompatActivity implements AdapterView.O
                 FormBody.Builder params = new FormBody.Builder();
                 try {
                     params.add("username", userAddress);
-                    String url = "http://10.68.127.124:8080/user/get-mails";
+                    String url = "http://10.68.127.124:8080/user/get-receive-mails";
                     Request request = new Request.Builder()
                             .url(url)
                             .post(params.build())
@@ -139,15 +129,13 @@ public class ReceiverActivity extends AppCompatActivity implements AdapterView.O
                     System.out.println(code);
                     if (code == 200) {
                         Gson gson=new Gson();
-                        mailList = gson.fromJson(jsonObject1.getString("body"), new TypeToken<List<Mail>>(){}.getType());
-                        for(Mail i: mailList) {
-                            mailList.add(i);
-                        }
+                        mailList = (List<Mail>) gson.fromJson(jsonObject1.getString("body"), new TypeToken<List<Mail>>(){}.getType());
+                        System.out.println(mailList);
                         Message msg = new Message();//创建信使（很形象的理解）
                         msg.what = 1;//给信使做标记
                         Bundle bundle = new Bundle();//创建放数据的容器
 
-                        bundle.putString("body", MyResult);
+                        bundle.putString("body", jsonObject1.getString("body"));
                         msg.setData(bundle);
                         handler.sendMessage(msg);	// handler传递参数
                     } else {
@@ -176,7 +164,7 @@ public class ReceiverActivity extends AppCompatActivity implements AdapterView.O
                 intent.putExtra("subject",curMail.getSubject());
                 intent.putExtra("date",curMail.getSendTime());
                 intent.putExtra("mode",3);
-                startActivityForResult(intent,1);
+                startActivity(intent);
                 break;
         }
     }

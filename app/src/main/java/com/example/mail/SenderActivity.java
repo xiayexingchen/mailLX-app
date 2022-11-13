@@ -33,6 +33,7 @@ import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -53,7 +54,7 @@ public class SenderActivity extends AppCompatActivity implements AdapterView.OnI
         setContentView(R.layout.activity_sender);
 
         SharedPreferencesUtil util = SharedPreferencesUtil.getInstance(SenderActivity.this);
-        userAddress = util.readString("user");
+        userAddress = util.readString("username");
 
         MyApplication application = (MyApplication) this.getApplicationContext();
         ip = application.getNumber();
@@ -64,7 +65,7 @@ public class SenderActivity extends AppCompatActivity implements AdapterView.OnI
             public void handleMessage(Message msg) {
                 if (msg.what == 1) {
                     // 动态更新数据UI界面
-                    String str = msg.getData().getString("res") + "";//获取值时相应的类型要对应，传入为String类型用getString；Int类型用getInt。
+                    String str = msg.getData().getString("body") + "";//获取值时相应的类型要对应，传入为String类型用getString；Int类型用getInt。
                     try {
                         JSONObject jsonObject1 = new JSONObject(str);
                         int code = jsonObject1.getInt("code");
@@ -103,69 +104,51 @@ public class SenderActivity extends AppCompatActivity implements AdapterView.OnI
 
     private void initData() {
         mailList = new ArrayList<Mail>();
-        mailList.add(new Mail("from.com", "to.com", Timestamp.valueOf("2022-5-26 14:00:00"), "欢迎使用邮件系统", "用户你好！这是一条系统初始化邮件，仅用用于测试用"));
-
     }
 
     private void freshData() {
 
         String ok = "获取成功";
-        String err = "网络错误";
+        String err = "邮箱为空";
         String empty = "空错误";
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                MediaType JSON = MediaType.parse("application/json;charset=utf-8");
-                JSONObject jsonObject = new JSONObject();
-                OkHttpClient httpClient = new OkHttpClient();
+                FormBody.Builder params = new FormBody.Builder();
                 try {
-                    jsonObject.put("senderAddress", userAddress);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                RequestBody requestBody = RequestBody.create(JSON, String.valueOf(jsonObject));
-                String url = "http://"+ip+":8080/mail/querySendMail";
-                Request request = new Request.Builder()
-                        .url(url)
-                        .post(requestBody)
-                        .build();
+                    params.add("username", userAddress);
+                    String url = "http://10.68.127.124:8080/user/get-send-mails";
+                    Request request = new Request.Builder()
+                            .url(url)
+                            .post(params.build())
+                            .build();
 
-                Call call = httpClient.newCall(request);
-                call.enqueue(new Callback() {
+                    OkHttpClient httpClient = new OkHttpClient();
+                    Response response = httpClient.newCall(request).execute();
+                    String MyResult = response.body().string();
+                    JSONObject jsonObject1 = new JSONObject(MyResult);
+                    int code = jsonObject1.getInt("state");
+                    System.out.println(code);
+                    if (code == 200) {
+                        Gson gson=new Gson();
+                        mailList = gson.fromJson(jsonObject1.getString("body"), new TypeToken<List<Mail>>(){}.getType());
+                        System.out.println(mailList);
+                        Message msg = new Message();//创建信使（很形象的理解）
+                        msg.what = 1;//给信使做标记
+                        Bundle bundle = new Bundle();//创建放数据的容器
 
-                    @Override
-                    public void onFailure(Call call, IOException e) {
+                        bundle.putString("body", MyResult);
+                        msg.setData(bundle);
+                        handler.sendMessage(msg);	// handler传递参数
+                    } else {
                         Looper.prepare();
                         Toast.makeText(getApplicationContext(), err, Toast.LENGTH_SHORT).show();
                         Looper.loop();
                     }
-
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        String MyResult = response.body().string();
-                        try {
-                            JSONObject jsonObject1 = new JSONObject(MyResult);
-                            System.out.println(jsonObject1);
-                            int code = jsonObject1.getInt("code");
-                            Gson gson=new Gson();
-                            List<Mail> mails = gson.fromJson(jsonObject1.getString("data"), new TypeToken<List<Mail>>(){}.getType());
-                            for(Mail i:mails) {
-                                mailList.add(i);
-                            }
-                            Message msg = new Message();//创建信使（很形象的理解）
-                            msg.what = 1;//给信使做标记
-                            Bundle bundle = new Bundle();//创建放数据的容器
-
-                            bundle.putString("res",MyResult);
-                            msg.setData(bundle);
-                            handler.sendMessage(msg);	// handler传递参数
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }).start();
 

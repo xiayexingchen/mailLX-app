@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         String ok = "登录成功";
         String err = "密码或账号有误，请重新登录";
         String empty = "错误，密码或账号为空";
+        String isNotExist = "用户不存在";
 
         if (account.length() == 0 || password.length() == 0) {
             Toast.makeText(MainActivity.this, empty, Toast.LENGTH_SHORT).show();
@@ -113,7 +114,12 @@ public class MainActivity extends AppCompatActivity {
                             Looper.prepare();
                             Toast.makeText(getApplicationContext(), ok, Toast.LENGTH_SHORT).show();
                             Looper.loop();
-                        } else {
+                        } else if (code == 404) {
+                            Looper.prepare();
+                            Toast.makeText(getApplicationContext(), isNotExist, Toast.LENGTH_SHORT).show();
+                            Looper.loop();
+                        }
+                        else {
                             Looper.prepare();
                             Toast.makeText(getApplicationContext(), err, Toast.LENGTH_SHORT).show();
                             Looper.loop();
