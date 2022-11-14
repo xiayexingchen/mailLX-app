@@ -67,23 +67,13 @@ public class SenderActivity extends AppCompatActivity implements AdapterView.OnI
                     // 动态更新数据UI界面
                     String str = msg.getData().getString("body") + "";//获取值时相应的类型要对应，传入为String类型用getString；Int类型用getInt。
                     try {
-                        JSONObject jsonObject1 = new JSONObject(str);
-                        int code = jsonObject1.getInt("code");
                         Gson gson=new Gson();
-                        List<Mail> mails = gson.fromJson(jsonObject1.getString("data"), new TypeToken<List<Mail>>(){}.getType());
-                        if(mails.size()!=0) {
-                            Collections.reverse(mails);
-                            mailList = new ArrayList<>();
-                            for(Mail i:mails) {
-                                mailList.add(i);
-                            }
-                            System.out.println(mailList.get(0));
-                            if(mails.size()!=0) {
-                                SenderActivity.MyListDataAdapter adapter = new SenderActivity.MyListDataAdapter();
-                                lv.setAdapter(adapter);
-                            }
+                        mailList = (List<Mail>) gson.fromJson(str, new TypeToken<List<Mail>>(){}.getType());
+                        if(mailList.size()!=0) {
+                            MyListDataAdapter adapter = new MyListDataAdapter();
+                            lv.setAdapter(adapter);
                         }
-                    } catch (JSONException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -97,7 +87,7 @@ public class SenderActivity extends AppCompatActivity implements AdapterView.OnI
 
         lv.setOnItemClickListener(this);
 
-        SenderActivity.MyListDataAdapter adapter = new SenderActivity.MyListDataAdapter();
+        MyListDataAdapter adapter = new MyListDataAdapter();
         lv.setAdapter(adapter);
 
     }
@@ -118,7 +108,7 @@ public class SenderActivity extends AppCompatActivity implements AdapterView.OnI
                 FormBody.Builder params = new FormBody.Builder();
                 try {
                     params.add("username", userAddress);
-                    String url = "http://10.68.127.124:8080/user/get-send-mails";
+                    String url = "http://10.72.11.179:8080/user/get-send-mails";
                     Request request = new Request.Builder()
                             .url(url)
                             .post(params.build())
@@ -132,7 +122,7 @@ public class SenderActivity extends AppCompatActivity implements AdapterView.OnI
                     System.out.println(code);
                     if (code == 200) {
                         Gson gson=new Gson();
-                        mailList = gson.fromJson(jsonObject1.getString("body"), new TypeToken<List<Mail>>(){}.getType());
+                        mailList = (List<Mail>) gson.fromJson(jsonObject1.getString("body"), new TypeToken<List<Mail>>(){}.getType());
                         System.out.println(mailList);
                         Message msg = new Message();//创建信使（很形象的理解）
                         msg.what = 1;//给信使做标记

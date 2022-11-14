@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         MyApplication application = (MyApplication) this.getApplicationContext();
 //setNumber填入服务端ip
-        application.setNumber("10.68.127.124");
+        application.setNumber("10.72.11.179");
 //取出变量
         ip = application.getNumber();
 
@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         String err = "密码或账号有误，请重新登录";
         String empty = "错误，密码或账号为空";
         String isNotExist = "用户不存在";
+        String isDelete = "用户被禁用";
 
         if (account.length() == 0 || password.length() == 0) {
             Toast.makeText(MainActivity.this, empty, Toast.LENGTH_SHORT).show();
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         params.add("username", account);
                         params.add("password", password);
-                        String url = "http://10.68.127.124:8080/user/login";
+                        String url = "http://10.72.11.179:8080/user/login";
                         Request request = new Request.Builder()
                                 .url(url)
                                 .post(params.build())
@@ -117,6 +118,10 @@ public class MainActivity extends AppCompatActivity {
                         } else if (code == 404) {
                             Looper.prepare();
                             Toast.makeText(getApplicationContext(), isNotExist, Toast.LENGTH_SHORT).show();
+                            Looper.loop();
+                        } else if (code == 414) {
+                            Looper.prepare();
+                            Toast.makeText(getApplicationContext(), isDelete, Toast.LENGTH_SHORT).show();
                             Looper.loop();
                         }
                         else {

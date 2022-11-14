@@ -97,7 +97,7 @@ public class AddActivity extends AppCompatActivity {
         };
 
         SharedPreferencesUtil util = SharedPreferencesUtil.getInstance(AddActivity.this);
-        tvFromAccount.setText(util.readString("user"));
+        tvFromAccount.setText(util.readString("username"));
 
         btSubmit.setOnClickListener(this::submit);
 
@@ -116,7 +116,7 @@ public class AddActivity extends AppCompatActivity {
         String err = "发送失败";
         String empty = "空错误";
         SharedPreferencesUtil util = SharedPreferencesUtil.getInstance(AddActivity.this);
-        String account = util.readString("user");
+        String account = util.readString("username");
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -126,7 +126,7 @@ public class AddActivity extends AppCompatActivity {
                     params.add("reciverAddress", reciverAddress);
                     params.add("subject", subject);
                     params.add("content", content);
-                    String url = "http://10.68.127.124:8080/user/add-mail";
+                    String url = "http://10.72.11.179:8080/user/add-mail";
                     Request request = new Request.Builder()
                             .url(url)
                             .post(params.build())

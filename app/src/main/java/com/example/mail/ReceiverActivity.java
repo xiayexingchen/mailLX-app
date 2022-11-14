@@ -107,7 +107,7 @@ public class ReceiverActivity extends AppCompatActivity implements AdapterView.O
 
         String ok = "获取成功";
         String err = "网络错误";
-        String empty = "空错误";
+        String empty = "邮箱为空";
 
         new Thread(new Runnable() {
             @Override
@@ -115,7 +115,7 @@ public class ReceiverActivity extends AppCompatActivity implements AdapterView.O
                 FormBody.Builder params = new FormBody.Builder();
                 try {
                     params.add("username", userAddress);
-                    String url = "http://10.68.127.124:8080/user/get-receive-mails";
+                    String url = "http://10.72.11.179:8080/user/get-receive-mails";
                     Request request = new Request.Builder()
                             .url(url)
                             .post(params.build())
@@ -138,7 +138,12 @@ public class ReceiverActivity extends AppCompatActivity implements AdapterView.O
                         bundle.putString("body", jsonObject1.getString("body"));
                         msg.setData(bundle);
                         handler.sendMessage(msg);	// handler传递参数
-                    } else {
+                    } else if (code == 403){
+                        Looper.prepare();
+                        Toast.makeText(getApplicationContext(), empty, Toast.LENGTH_SHORT).show();
+                        Looper.loop();
+                    }
+                    else {
                         Looper.prepare();
                         Toast.makeText(getApplicationContext(), err, Toast.LENGTH_SHORT).show();
                         Looper.loop();
