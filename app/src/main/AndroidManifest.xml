@@ -24,6 +24,9 @@
             android:name="com.example.mail.SenderActivity"
             android:exported="false" />
         <activity
+            android:name="com.example.mail.DeletedActivity"
+            android:exported="false" />
+        <activity
             android:name="com.example.mail.InfoActivoty"
             android:exported="false" />
         <activity

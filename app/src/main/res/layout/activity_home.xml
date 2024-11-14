@@ -1,88 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:padding="10dp"
-    tools:context="com.example.mail.HomeActivity">
+    android:background="#F5F5F5"
+    android:orientation="vertical"
+    android:padding="16dp">
 
-    <LinearLayout
+    <!-- 顶部白色圆角卡片 -->
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#F5F5F5"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <!--Logo-->
-<!--        <ImageView-->
-<!--            android:id="@+id/LogoImage"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="120dp"-->
-<!--            android:layout_marginTop="100dp"-->
-<!--            android:src="@mipmap/img" />-->
-
-        <TextView
-            android:id="@+id/NickName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textColor="#808080"
-            android:textSize="30dp"
-            android:textStyle="italic" />
-
-        <TextView
-            android:id="@+id/TitleText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="欢迎使用邮件系统"
-            android:textColor="#808080"
-            android:textSize="30dp" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:background="#F5F5F5"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <Button
-                android:id="@+id/ReceiverBox"
-                android:layout_width="180dp"
+            <TextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:layout_weight="1"
-                android:background="@drawable/translucent_button"
-                android:padding="15dp"
-                android:text="收 件 箱"
-                android:textColor="@color/white"
-                android:textSize="24dp" />
+                android:text="湖南大学-云行者邮箱"
+                android:textAlignment="center"
+                android:textColor="#333333"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/SenderBox"
-                android:layout_width="180dp"
+            <TextView
+                android:id="@+id/userEmail"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:layout_weight="1"
-                android:background="@drawable/translucent_button"
-                android:padding="15dp"
-                android:text="已 发 送"
-                android:textColor="@color/white"
-                android:textSize="24dp" />
+                android:layout_marginTop="12dp"
+                android:textAlignment="center"
+                android:textColor="#666666"
+                android:textSize="16sp" />
         </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/Add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|bottom"
-            android:layout_margin="10dp"
-            android:layout_marginTop="100dp"
-            android:src="@android:drawable/ic_input_add" />
+    <!-- 功能列表 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- 写邮件 -->
+        <LinearLayout
+            android:id="@+id/writeEmailLayout"
+            style="@style/MenuItemStyle">
+
+            <ImageView
+                style="@style/MenuIconStyle"
+                android:src="@android:drawable/ic_menu_edit" />
+
+            <TextView
+                style="@style/MenuTextStyle"
+                android:text="写邮件" />
+        </LinearLayout>
+        <!-- 分隔线 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#DDDDDD" />
+
+        <!-- 收件箱 -->
+        <LinearLayout
+            android:id="@+id/inboxLayout"
+            style="@style/MenuItemStyle">
+
+            <ImageView
+                style="@style/MenuIconStyle"
+                android:src="@android:drawable/sym_action_email" />
+
+            <TextView
+                style="@style/MenuTextStyle"
+                android:text="收件箱" />
+        </LinearLayout>
+        <!-- 分隔线 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#DDDDDD" />
+        <!-- 已发送 -->
+
+        <LinearLayout
+            android:id="@+id/sentLayout"
+            style="@style/MenuItemStyle">
+
+            <ImageView
+                style="@style/MenuIconStyle"
+                android:src="@android:drawable/ic_menu_send" />
+
+            <TextView
+                style="@style/MenuTextStyle"
+                android:text="已发送" />
+        </LinearLayout>
+        <!-- 分隔线 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#DDDDDD" />
+        <!-- 已删除 -->
+
+        <LinearLayout
+            android:id="@+id/deletedLayout"
+            style="@style/MenuItemStyle">
+
+            <ImageView
+                style="@style/MenuIconStyle"
+                android:src="@android:drawable/ic_menu_delete" />
+
+            <TextView
+                style="@style/MenuTextStyle"
+                android:text="已删除" />
+        </LinearLayout>
     </LinearLayout>
 
-</LinearLayout>
+        <!-- 分隔线 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#DDDDDD" />
+
+        <!-- 退出登录 -->
+        <LinearLayout
+            android:id="@+id/logoutLayout"
+            style="@style/MenuItemStyle">
+
+            <ImageView
+                style="@style/MenuIconStyle"
+                android:src="@android:drawable/ic_menu_close_clear_cancel" />
+
+            <TextView
+                style="@style/MenuTextStyle"
+                android:text="退出登录"
+                android:textColor="#FF4444" />
+        </LinearLayout>
+
+    </LinearLayout>
+
