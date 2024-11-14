@@ -29,6 +29,10 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+
+
+import com.example.mail.Pop3Helper;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button btnLogin;
@@ -47,31 +51,25 @@ public class MainActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.LoginButton);
         btnRegister = findViewById(R.id.ToSignUpButton);
         etAccount = findViewById(R.id.UserNameEdit);
-
         etPassword = findViewById(R.id.PassWordEdit);
 
-
+        // 获取应用程序中的 IP 地址
         MyApplication application = (MyApplication) this.getApplicationContext();
-//setNumber填入服务端ip
         application.setNumber("10.72.11.179");
-//取出变量
         ip = application.getNumber();
 
-
-        //实现跳转
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
-                startActivity(intent);
-            }
+        // 注册按钮点击事件，跳转到注册页面
+        btnRegister.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+            startActivity(intent);
         });
 
+        // 登录按钮点击事件
         btnLogin.setOnClickListener(this::login);
     }
 
     public void login(View v) {
-        //获取输入的账户和密码
+        // 获取输入的账户和密码
         String account = etAccount.getText().toString();
         String password = etPassword.getText().toString();
 
@@ -81,60 +79,67 @@ public class MainActivity extends AppCompatActivity {
         String isNotExist = "用户不存在";
         String isDelete = "用户被禁用";
 
-        if (account.length() == 0 || password.length() == 0) {
+        if (account.isEmpty() || password.isEmpty()) {
             Toast.makeText(MainActivity.this, empty, Toast.LENGTH_SHORT).show();
         } else {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    FormBody.Builder params = new FormBody.Builder();
-                    try {
-                        params.add("username", account);
-                        params.add("password", password);
-                        String url = "http://10.72.11.179:8080/user/login";
-                        Request request = new Request.Builder()
-                                .url(url)
-                                .post(params.build())
-                                .build();
+            new Thread(() -> {
+                // 使用 Pop3Helper 进行 POP3 登录
+                Pop3Helper pop3Helper = new Pop3Helper();
+                SmtpHelper smtpHelper = new SmtpHelper();
 
-                        OkHttpClient httpClient = new OkHttpClient();
-                        Response response = httpClient.newCall(request).execute();
-                        String MyResult = response.body().string();
-                        JSONObject jsonObject1 = new JSONObject(MyResult);
-                        int code = jsonObject1.getInt("state");
-                        System.out.println(code);
-                        if (code == 200) {
+
+
+                // 连接到 POP3 服务器
+                if (pop3Helper.connectToPop3("192.168.31.118", 110)) {
+                    // 使用 POP3 登录验证
+                    boolean loginSuccessful = pop3Helper.login(account, password);
+
+                    if (loginSuccessful) {
+                        // 连接 SMTP 服务器
+                        if(smtpHelper.connectToSmtp("192.168.31.118", 25))
+                        {
+                            smtpHelper.login(account, password);
+                        }
+                        // 登录成功，跳转到主页面
+                        runOnUiThread(() -> {
+                            // 发送登录成功邮件
+                            sendLoginSuccessEmail(account);
+
+                            // 保存登录状态
                             SharedPreferencesUtil util = SharedPreferencesUtil.getInstance(MainActivity.this);
                             util.putBoolean("isLogin", true);
                             util.putString("username", account);
 
-
+                            // 跳转到主页
                             Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-
                             startActivity(intent);
-                            Looper.prepare();
+
+                            // 显示登录成功信息
                             Toast.makeText(getApplicationContext(), ok, Toast.LENGTH_SHORT).show();
-                            Looper.loop();
-                        } else if (code == 404) {
-                            Looper.prepare();
-                            Toast.makeText(getApplicationContext(), isNotExist, Toast.LENGTH_SHORT).show();
-                            Looper.loop();
-                        } else if (code == 414) {
-                            Looper.prepare();
-                            Toast.makeText(getApplicationContext(), isDelete, Toast.LENGTH_SHORT).show();
-                            Looper.loop();
-                        }
-                        else {
-                            Looper.prepare();
+                        });
+                    } else {
+                        // 登录失败
+                        runOnUiThread(() -> {
                             Toast.makeText(getApplicationContext(), err, Toast.LENGTH_SHORT).show();
-                            Looper.loop();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                        });
                     }
+
+
+                } else {
+                    // 连接失败
+                    runOnUiThread(() -> {
+                        Toast.makeText(getApplicationContext(), "无法连接到 POP3 服务器", Toast.LENGTH_SHORT).show();
+                    });
                 }
             }).start();
-
         }
+    }
+
+    private void sendLoginSuccessEmail(String account) {
+        // 发送登录成功的邮件
+        String recipient = account;
+        String subject = "Login Success";
+        String body = "Dear " + account + ",\n\nYou have successfully logged in!";
+        // TODO: 通过 SMTP 发送邮件
     }
 }
