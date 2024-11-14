@@ -115,7 +115,7 @@ public class ReceiverActivity extends AppCompatActivity implements AdapterView.O
                 FormBody.Builder params = new FormBody.Builder();
                 try {
                     params.add("username", userAddress);
-                    String url = "http://10.72.11.179:8080/user/get-receive-mails";
+                    String url = "http://10.0.2.2:8080/user/get-receive-mails";
                     Request request = new Request.Builder()
                             .url(url)
                             .post(params.build())

@@ -108,7 +108,7 @@ public class SenderActivity extends AppCompatActivity implements AdapterView.OnI
                 FormBody.Builder params = new FormBody.Builder();
                 try {
                     params.add("username", userAddress);
-                    String url = "http://10.72.11.179:8080/user/get-send-mails";
+                    String url = "http://110.0.2.2:8080/user/get-send-mails";
                     Request request = new Request.Builder()
                             .url(url)
                             .post(params.build())

@@ -90,13 +90,13 @@ public class MainActivity extends AppCompatActivity {
 
 
                 // 连接到 POP3 服务器
-                if (pop3Helper.connectToPop3("192.168.31.118", 110)) {
+                if (pop3Helper.connectToPop3("10.0.2.2", 110)) {
                     // 使用 POP3 登录验证
                     boolean loginSuccessful = pop3Helper.login(account, password);
 
                     if (loginSuccessful) {
                         // 连接 SMTP 服务器
-                        if(smtpHelper.connectToSmtp("192.168.31.118", 25))
+                        if(smtpHelper.connectToSmtp("10.0.2.2", 25))
                         {
                             smtpHelper.login(account, password);
                         }

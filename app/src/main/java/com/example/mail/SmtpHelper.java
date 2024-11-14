@@ -28,14 +28,13 @@ public class SmtpHelper {
 
     // 发送 Smtp 登录命令
     public boolean login(String username, String password) {
-        // 发送 USER 命令
         socketManager.sendSmtpCommand("HELO " + username);
         String response = socketManager.receiveSmtpResponse();
         Log.d(TAG, "Smtp服务器响应: " + response);
 
         if(response.contains("250 OK"))
         {
-            // 发送 PASS 命令
+
             socketManager.sendSmtpCommand("AUTH LOGIN");
             response = socketManager.receiveSmtpResponse();
             Log.d(TAG, "Smtp服务器响应: " + response);

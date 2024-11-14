@@ -126,7 +126,7 @@ public class AddActivity extends AppCompatActivity {
                     params.add("reciverAddress", reciverAddress);
                     params.add("subject", subject);
                     params.add("content", content);
-                    String url = "http://10.72.11.179:8080/user/add-mail";
+                    String url = "http://10.0.2.2:8080/user/add-mail";
                     Request request = new Request.Builder()
                             .url(url)
                             .post(params.build())
