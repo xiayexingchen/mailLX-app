@@ -1,56 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="12dp"
+    android:background="@color/white">
+
+    <!-- 发件人和时间行 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-            <TextView
-                tools:text = "from:"
-                android:id="@+id/from"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                tools:text = "发送人"
-                android:id="@+id/sender_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+        android:orientation="horizontal">
+
         <TextView
-            tools:text = "主题"
-            android:id="@+id/subject"
-            android:layout_width="match_parent"
+            android:id="@+id/sender_name"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="22dp"
-            android:maxLines="1"
-            android:maxLength="20"
-            android:ellipsize="end"
-            android:textStyle="bold"/>
+            android:layout_weight="1"
+            android:textColor="#2C3E50"
+            android:textSize="16sp" />
+
         <TextView
-            tools:text = "内容"
-            android:id="@+id/content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="2"
-            android:maxLength="30"
-            android:ellipsize="end"
-            />
-        <TextView
-            android:layout_marginBottom="5dp"
-            tools:text = "发送时间"
             android:id="@+id/receiverDate"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#95A5A6"
+            android:textSize="14sp" />
     </LinearLayout>
 
+    <!-- 主题 -->
+    <TextView
+        android:id="@+id/subject"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:textColor="#2C3E50"
+        android:textSize="15sp"
+        android:maxLines="1"
+        android:ellipsize="end" />
 
-    
+    <!-- 内容预览 -->
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="#7F8C8D"
+        android:textSize="14sp"
+        android:maxLines="2"
+        android:ellipsize="end" />
+
+    <!-- 操作按钮 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="end">
+
+         </LinearLayout>
+
+    <!-- 底部分割线 -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:background="#F0F0F0" />
 </LinearLayout>

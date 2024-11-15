@@ -1,102 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#F5F7FA"
     tools:context="com.example.mail.InfoActivoty">
+
+    <!-- 顶部操作栏 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:background="@color/white"
+        android:elevation="4dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/returnbtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:text="返回"
+            android:textSize="16sp"
+            android:textColor="#333333"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="个人信息"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#333333"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text=""
+            android:textColor="#0069ff"
+            style="@style/Widget.MaterialComponents.Button"/>
+    </LinearLayout>
+
+  <!-- 信息内容区域 -->
   <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:orientation="vertical"
-      android:padding="10dp">
+      android:padding="16dp">
 
-    <LinearLayout
+    <!-- 邮箱 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="邮箱"
+        android:textColor="#7F8C8D"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/baccount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="邮箱" />
+        android:layout_marginTop="8dp"
+        android:background="@color/white"
+        android:padding="12dp"
+        android:textSize="16sp"
+        android:textColor="#2C3E50"
+        android:enabled="false" />
 
-      <EditText
-          android:id="@+id/baccount"
-          android:maxLines="1"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:background="@drawable/translucent_edit"
-          android:layout_marginTop="5dp"
-          android:editable="false"
-          />
-    </LinearLayout>
+    <!-- 密码 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="密码"
+        android:textColor="#7F8C8D"
+        android:textSize="14sp" />
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/bpassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="密码" />
+        android:layout_marginTop="8dp"
+        android:background="@color/white"
+        android:padding="12dp"
+        android:textSize="16sp"
+        android:inputType="textPassword" />
 
-      <EditText
-          android:id="@+id/bpassword"
-          android:maxLines="1"
-          android:layout_width="match_parent"
-          android:background="@drawable/translucent_edit"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="5dp"
-          android:inputType="textPassword"
-          />
-    </LinearLayout>
+    <!-- 昵称 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="昵称"
+        android:textColor="#7F8C8D"
+        android:textSize="14sp" />
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/bnickname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="昵称" />
+        android:layout_marginTop="8dp"
+        android:background="@color/white"
+        android:padding="12dp"
+        android:textSize="16sp" />
 
-      <EditText
-          android:id="@+id/bnickname"
-          android:maxLines="1"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:background="@drawable/translucent_edit"
-          android:layout_marginTop="5dp"
-          />
-    </LinearLayout>
+    <!-- 邮箱授权码 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="邮箱授权码"
+        android:textColor="#7F8C8D"
+        android:textSize="14sp" />
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/bauthorization"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="邮箱授权码" />
+        android:layout_marginTop="8dp"
+        android:background="@color/white"
+        android:padding="12dp"
+        android:textSize="16sp" />
 
-      <EditText
-          android:id="@+id/bauthorization"
-          android:maxLines="1"
-          android:layout_width="match_parent"
-          android:background="@drawable/translucent_edit"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="5dp"
-          />
-    </LinearLayout>
-
+    <!-- 修改按钮 -->
     <Button
+        android:id="@+id/changeinfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/translucent_button"
-        android:id="@+id/changeinfo"
-        android:text="修改" />
+        android:layout_marginTop="32dp"
+        android:backgroundTint="#2196F3"
+        android:text="保存修改"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
 
   </LinearLayout>
-  </ScrollView>
+</LinearLayout>

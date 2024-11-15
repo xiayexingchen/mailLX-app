@@ -4,131 +4,135 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="10dp"
+    android:background="#F5F7FA"
     tools:context="com.example.mail.MainActivity">
 
-
-    <!--使用线性布局-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center"
-        android:background="#F5F5F5">
+        android:padding="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3">
 
-        <!--Logo-->
-<!--        <ImageView-->
-<!--            android:id="@+id/LogoImage"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="120dp"-->
-<!--            android:layout_marginTop="100dp"-->
-<!--            android:src="@drawable/logo"/>-->
+        <!-- Logo和标题区域 -->
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:src="@android:drawable/ic_dialog_email"
+            android:tint="#1E88E5" />
 
-        <!--标题-->
         <TextView
             android:id="@+id/TitleText"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="邮件系统•登录"
-            android:gravity="center"
-            android:textStyle="italic"
-            android:textColor="#808080"
-            android:textSize="30dp" />
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:text="云行者邮箱"
+            android:textColor="#2C3E50"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-        <!--嵌套线性布局-->
+        <!-- 登录表单区域 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="48dp"
             android:orientation="vertical">
 
-            <!--嵌套线性布局-->
+            <!-- 用户名输入框 -->
             <LinearLayout
                 android:id="@+id/UserNameLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_text_background"
+                android:orientation="horizontal">
 
-                <!--用户名输入-->
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="16dp"
+                    android:src="@drawable/baseline_people_alt_24"
+                    app:tint="#1E88E5" />
+
                 <EditText
                     android:id="@+id/UserNameEdit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="15dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="15dp"
-                    android:background="@drawable/translucent_edit"
-                    android:hint="输入账户"
-                    android:textSize="24dp"
-                    android:singleLine="true" />
-
+                    android:background="@null"
+                    android:hint="账号"
+                    android:padding="16dp"
+                    android:singleLine="true"
+                    android:textColor="#2C3E50"
+                    android:textColorHint="#95A5A6"
+                    android:textSize="16sp" />
             </LinearLayout>
 
-            <!--嵌套线性布局-->
+            <!-- 密码输入框 -->
             <LinearLayout
                 android:id="@+id/PassWordLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/edit_text_background"
+                android:orientation="horizontal">
 
-                <!--密码输入-->
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="16dp"
+                    android:src="@android:drawable/ic_lock_idle_lock"
+                    android:tint="#1E88E5" />
+
                 <EditText
                     android:id="@+id/PassWordEdit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="15dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="15dp"
-                    android:background="@drawable/translucent_edit"
-                    android:hint="输入用户密码"
-                    android:textSize="24dp"
+                    android:background="@null"
+                    android:hint="密码"
+                    android:inputType="textPassword"
                     android:maxLength="16"
+                    android:padding="16dp"
                     android:singleLine="true"
-                    android:inputType="textPassword" />
-
+                    android:textColor="#2C3E50"
+                    android:textColorHint="#95A5A6"
+                    android:textSize="16sp" />
             </LinearLayout>
 
-            <!--嵌套线性布局-->
+            <!-- 按钮区域 -->
             <LinearLayout
                 android:id="@+id/LayoutButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginTop="32dp"
+                android:orientation="vertical">
 
-                <!--登录按钮-->
                 <Button
                     android:id="@+id/LoginButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="15dp"
-                    android:layout_margin="15dp"
-                    android:layout_weight="1"
+                    android:backgroundTint="#1E88E5"
+                    android:padding="12dp"
+                    android:text="登 录"
                     android:textColor="@color/white"
-                    android:background="@drawable/translucent_button"
-                    android:text="登   录"
-                    android:textSize="24dp" />
-<!--                    android:onClick="login"-->
+                    android:textSize="16sp" />
 
-
-                <!--注册按钮-->
                 <Button
                     android:id="@+id/ToSignUpButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="15dp"
-                    android:layout_margin="15dp"
-                    android:layout_weight="1"
-                    android:textColor="@color/white"
-                    android:background="@drawable/translucent_button"
-
-                    android:text="注   册"
-                    android:textSize="24dp" />
+                    android:layout_marginTop="12dp"
+                    android:backgroundTint="#FFFFFF"
+                    android:padding="12dp"
+                    android:text="注 册"
+                    android:textColor="#1E88E5"
+                    android:textSize="16sp"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
             </LinearLayout>
-
         </LinearLayout>
-
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

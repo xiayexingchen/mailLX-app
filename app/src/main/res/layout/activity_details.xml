@@ -1,115 +1,153 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#F5F7FA"
     tools:context="com.example.mail.DetailsActivity">
+
+    <!-- 顶部操作栏 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="12dp"
+        android:background="@color/white"
+        android:elevation="4dp"
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/returnbtn"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="From" />
+            android:layout_weight="0.3"
+            android:text="返回"
+            android:textSize="16sp"
+            android:textColor="#333333"/>
 
-            <EditText
-                android:id="@+id/afrom"
-                android:maxLines="1"
-                android:layout_width="match_parent"
-                android:background="@drawable/translucent_edit"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:editable="false"
-                />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="To" />
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="邮件详细"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#333333"/>
 
-            <EditText
-                android:id="@+id/ato"
-                android:maxLines="1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/translucent_edit"
-                android:layout_marginTop="5dp"
-                android:editable="false"
-                />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="date" />
-
-            <EditText
-                android:id="@+id/adate"
-                android:maxLines="1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/translucent_edit"
-                android:layout_marginTop="5dp"
-                android:editable="false"
-                />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Subject" />
-
-            <EditText
-                android:id="@+id/asubject"
-                android:maxLines="1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/translucent_edit"
-                android:layout_marginTop="5dp"
-                android:editable="false"
-                />
-        </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Content" />
+            android:layout_height="36dp"
+            android:text=""
+            android:textColor="#0069ff"
+            style="@style/Widget.MaterialComponents.Button"/>
+    </LinearLayout>
 
-        <EditText
-            android:id="@+id/acontent"
+    <!-- 邮件内容区域 -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:background="@drawable/translucent_edit"
-            android:gravity="left"
-            android:editable="false"
-            android:layout_height="300dp"
-            android:layout_marginTop="5dp" />
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
 
+            <!-- 主题 -->
+            <TextView
+                android:id="@+id/asubject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#2C3E50"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-    </LinearLayout>
-</ScrollView>
+            <!-- 发件人信息 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="发件人："
+                    android:textColor="#7F8C8D"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/afrom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#2C3E50"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <!-- 收件人信息 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="收件人："
+                    android:textColor="#7F8C8D"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/ato"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#2C3E50"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <!-- 时间信息 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="时间："
+                    android:textColor="#7F8C8D"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/adate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#2C3E50"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <!-- 分割线 -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="16dp"
+                android:background="#E0E6ED" />
+
+            <!-- 邮件内容 -->
+            <TextView
+                android:id="@+id/acontent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#2C3E50"
+                android:textSize="16sp"
+                android:lineSpacingMultiplier="1.2" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
