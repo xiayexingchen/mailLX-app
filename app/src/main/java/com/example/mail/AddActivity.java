@@ -43,10 +43,10 @@ public class AddActivity extends AppCompatActivity {
     private EditText etTo;
     private EditText etTitle;
     private EditText etContent;
-    private EditText etAuthorizition;
+
     private TextView tvFrom;
     private TextView tvFromAccount;
-    private Button btSubmit;
+    private TextView btSubmit;
     Handler handler;
     private String ip;
 
@@ -61,7 +61,6 @@ public class AddActivity extends AppCompatActivity {
         etTo = findViewById(R.id.to_add);
         etTitle = findViewById(R.id.et_title);
         etContent = findViewById(R.id.et_content);
-//        etAuthorizition = findViewById(R.id.authorization);
         tvFrom = findViewById(R.id.from_account);
         tvFromAccount= findViewById(R.id.from_add);
         btSubmit = findViewById(R.id.submit);
@@ -126,7 +125,7 @@ public class AddActivity extends AppCompatActivity {
                     params.add("reciverAddress", reciverAddress);
                     params.add("subject", subject);
                     params.add("content", content);
-                    String url = "http://10.72.11.179:8080/user/add-mail";
+                    String url = "http://"+ip+"/user/add-mail";
                     Request request = new Request.Builder()
                             .url(url)
                             .post(params.build())
@@ -156,60 +155,5 @@ public class AddActivity extends AppCompatActivity {
         }).start();
     }
 
-    public void getNickName() {
-        String ok = "获取成功";
-        String err = "网络错误";
-        String empty = "空错误";
-        SharedPreferencesUtil util = SharedPreferencesUtil.getInstance(AddActivity.this);
-        String account = util.readString("username");
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                MediaType JSON = MediaType.parse("application/json;charset=utf-8");
-                JSONObject jsonObject = new JSONObject();
-                OkHttpClient httpClient = new OkHttpClient();
-                try {
-                    jsonObject.put("account", account);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                RequestBody requestBody = RequestBody.create(JSON, String.valueOf(jsonObject));
-                String url = "http://"+ip+":8080/people/queryPeopleMsg";
-                Request request = new Request.Builder()
-                        .url(url)
-                        .post(requestBody)
-                        .build();
 
-                Call call = httpClient.newCall(request);
-                call.enqueue(new Callback() {
-
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        Looper.prepare();
-                        Toast.makeText(getApplicationContext(), err, Toast.LENGTH_SHORT).show();
-                        Looper.loop();
-                    }
-
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        String MyResult = response.body().string();
-                        try {
-                            JSONObject jsonObject1 = new JSONObject(MyResult);
-                            int code = jsonObject1.getInt("code");
-                            System.out.println(code);
-                            Message msg = new Message();//创建信使（很形象的理解）
-                            msg.what = 1;//给信使做标记
-                            Bundle bundle = new Bundle();//创建放数据的容器
-
-                            bundle.putString("res",MyResult);
-                            msg.setData(bundle);
-                            handler.sendMessage(msg);	// handler传递参数
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-            }
-        }).start();
-    }
 }

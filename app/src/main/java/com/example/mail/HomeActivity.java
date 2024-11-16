@@ -62,30 +62,9 @@ public class HomeActivity extends AppCompatActivity {
         //取出变量
         MyApplication application = (MyApplication) this.getApplicationContext();
         ip = application.getNumber();
-
-//        handler = new Handler(Looper.getMainLooper()) {
-//            @SuppressLint("HandlerLeak")
-//            @Override
-//            public void handleMessage(Message msg) {
-//                if (msg.what == 1) {
-//                    // 动态更新数据UI界面
-//                    String str = msg.getData().getString("res") + "";//获取值时相应的类型要对应，传入为String类型用getString；Int类型用getInt。
-//                    try {
-//                        JSONObject jsonObject1 = new JSONObject(str);
-//                        int code = jsonObject1.getInt("code");
-//                        Gson gson=new Gson();
-//                        User user = gson.fromJson(jsonObject1.getString("data"), new TypeToken<User>(){}.getType());
-//                        System.out.println(user);
-//                        tvNickname.setText(user.getNickName());
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//        };
-//        getNickName();
         SharedPreferencesUtil util = SharedPreferencesUtil.getInstance(HomeActivity.this);
         userEmail.setText(util.readString("username"));
+        System.out.println(userEmail.getText().toString());
 
         //实现跳转
         userEmail.setOnClickListener(new View.OnClickListener() {
@@ -134,67 +113,10 @@ public class HomeActivity extends AppCompatActivity {
         logoutLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             //   Intent intent = new Intent(HomeActivity.this, AddActivity.class);
-             //   startActivity(intent);
+             finish();
             }
         });
     }
-//
-//    public void getNickName() {
-//        String ok = "获取成功";
-//        String err = "网络错误";
-//        String empty = "空错误";
-//        SharedPreferencesUtil util = SharedPreferencesUtil.getInstance(HomeActivity.this);
-//        String account = util.readString("user");
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                MediaType JSON = MediaType.parse("application/json;charset=utf-8");
-//                JSONObject jsonObject = new JSONObject();
-//                OkHttpClient httpClient = new OkHttpClient();
-//                try {
-//                    jsonObject.put("account", account);
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//                RequestBody requestBody = RequestBody.create(JSON, String.valueOf(jsonObject));
-//                String url = "http://"+ip+":8080/people/queryPeopleMsg";
-//                Request request = new Request.Builder()
-//                        .url(url)
-//                        .post(requestBody)
-//                        .build();
-//
-//                Call call = httpClient.newCall(request);
-//                call.enqueue(new Callback() {
-//
-//                    @Override
-//                    public void onFailure(Call call, IOException e) {
-//                        Looper.prepare();
-//                        Toast.makeText(getApplicationContext(), err, Toast.LENGTH_SHORT).show();
-//                        Looper.loop();
-//                    }
-//
-//                    @Override
-//                    public void onResponse(Call call, Response response) throws IOException {
-//                        String MyResult = response.body().string();
-//                        try {
-//                            JSONObject jsonObject1 = new JSONObject(MyResult);
-//                            int code = jsonObject1.getInt("state");
-//                            System.out.println(code);
-//                            Message msg = new Message();//创建信使（很形象的理解）
-//                            msg.what = 1;//给信使做标记
-//                            Bundle bundle = new Bundle();//创建放数据的容器
-//
-//                            bundle.putString("res",MyResult);
-//                            msg.setData(bundle);
-//                            handler.sendMessage(msg);	// handler传递参数
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                });
-//            }
-//        }).start();
-//    }
-
 }
+
+

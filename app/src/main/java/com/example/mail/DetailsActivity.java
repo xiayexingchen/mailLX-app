@@ -6,14 +6,15 @@ import com.example.app.R;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class DetailsActivity extends AppCompatActivity {
 
-    private EditText edfrom;
-    private EditText edto;
-    private EditText eddate;
-    private EditText edsubject;
-    private EditText edcontent;
+    private TextView edfrom;
+    private TextView edto;
+    private TextView eddate;
+    private TextView edsubject;
+    private TextView edcontent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

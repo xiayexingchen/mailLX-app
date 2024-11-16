@@ -90,7 +90,7 @@ public class RegisterActivity extends AppCompatActivity {
                     try {
                         params.add("username", account);
                         params.add("password", password);
-                        String url = "http://10.0.2.2:8080/register";
+                        String url = "http://"+ip+"/register";
                         Request request = new Request.Builder()
                                 .url(url)
                                 .post(params.build())

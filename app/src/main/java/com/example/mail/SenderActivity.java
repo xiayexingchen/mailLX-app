@@ -22,22 +22,14 @@ import com.example.mail.entity.Mail;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.FormBody;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class SenderActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
@@ -184,7 +176,7 @@ public class SenderActivity extends AppCompatActivity implements AdapterView.OnI
         public View getView(int i, View view, ViewGroup viewGroup) {
             MyListViewHolder viewHolder;
             if (view == null) {
-                view = View.inflate(SenderActivity.this, R.layout.list_item, null);
+                view = View.inflate(SenderActivity.this, R.layout.item_sender_email, null);
                 viewHolder = new MyListViewHolder();;
                 viewHolder.sender_name = view.findViewById(R.id.sender_name);
                 viewHolder.subject = view.findViewById(R.id.subject);
