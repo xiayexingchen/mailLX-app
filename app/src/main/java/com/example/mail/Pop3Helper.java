@@ -177,7 +177,7 @@ public class Pop3Helper {
 
     public boolean restMail(int mailId)
     {
-        socketManager.sendPop3Command("RSET "+(mailId+1));
+        socketManager.sendPop3Command("REST "+(mailId+1));
         String response=socketManager.receivePop3Response();
         Log.d(TAG, "POP3服务器响应: " + response);
         return response.contains("+OK");

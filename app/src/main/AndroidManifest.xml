@@ -42,6 +42,9 @@
             android:name="com.example.mail.RegisterActivity"
             android:exported="false" />
         <activity
+            android:name="com.example.mail.DeletedActivity"
+            android:exported="false" />
+        <activity
             android:name="com.example.mail.MainActivity"
             android:exported="true">
             <intent-filter>

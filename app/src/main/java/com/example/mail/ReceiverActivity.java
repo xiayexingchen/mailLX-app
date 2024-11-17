@@ -30,58 +30,68 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReceiverActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
-    private List<Mail> mailList = new ArrayList<>();
-    private String userAddress;
-    ListView lv;
-    Handler handler;
-    private String ip;
-    private Pop3Helper pop3Helper;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_receiver);
+    public class ReceiverActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
+        private List<Mail> mailList = null;
+        private String  userAddress;
+        ListView lv;
+        Handler handler;
+        Pop3Helper pop3Helper=new Pop3Helper();
+        private String ip;
+        private TextView btReturn;
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_receiver);
 
-        SharedPreferencesUtil util = SharedPreferencesUtil.getInstance(ReceiverActivity.this);
-        userAddress = util.readString("username");
+            SharedPreferencesUtil util = SharedPreferencesUtil.getInstance(com.example.mail.ReceiverActivity.this);
+            userAddress = util.readString("username");
 
-        // 从应用中获取IP或其他配置
-        MyApplication application = (MyApplication) this.getApplicationContext();
-        ip = application.getNumber();
+            MyApplication application = (MyApplication) this.getApplicationContext();
+            ip = application.getNumber();
 
+            //找到控件
+            btReturn = findViewById(R.id.returnbtn);
 
-        handler = new Handler(Looper.getMainLooper()) {
-            @SuppressLint("HandlerLeak")
-            @Override
-            public void handleMessage(Message msg) {
-                if (msg.what == 1) {
-                    // 动态更新数据UI界面
-                    String str = msg.getData().getString("body");
-                    try {
-                        Gson gson = new Gson();
-                        mailList = gson.fromJson(str, new TypeToken<List<Mail>>(){}.getType());
-                        if (mailList.size() != 0) {
-                            MyListDataAdapter adapter = new MyListDataAdapter();
-                            lv.setAdapter(adapter);
+            handler = new Handler(Looper.getMainLooper()) {
+                @SuppressLint("HandlerLeak")
+                @Override
+                public void handleMessage(Message msg) {
+                    if (msg.what == 1) {
+                        System.out.println("handle:\n");
+                        System.out.println("msg:"+msg);
+                        // 动态更新数据UI界面
+                        String str = msg.getData().getString("body") + "";//获取值时相应的类型要对应，传入为String类型用getString；Int类型用getInt。
+                        System.out.println(str);
+                        try {
+                            Gson gson=new Gson();
+                            mailList = (List<Mail>) gson.fromJson(str, new TypeToken<List<Mail>>(){}.getType());
+                            Log.d("Adapter", "Mail list size: " + mailList.size());
+
+                            if(mailList.size()!=0) {
+                                MyListDataAdapter adapter = new MyListDataAdapter();
+                                lv.setAdapter(adapter);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
                 }
-            }
-        };
+            };
+            initData();
+            freshData();
+            lv = findViewById(R.id.rlv_rec);
+            lv.setOnItemClickListener(this::onItemClick);
+            MyListDataAdapter adapter = new MyListDataAdapter();
+            lv.setAdapter(adapter);
 
-        pop3Helper = new Pop3Helper(); // 创建Pop3Helper实例
-        lv = findViewById(R.id.rlv);
-        lv.setOnItemClickListener(this);
-
-        MyListDataAdapter adapter = new MyListDataAdapter();
-        lv.setAdapter(adapter);
-
-        initData();
-        freshData();
-    }
+            btReturn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+        }
 
     private void initData() {
         mailList = new ArrayList<>();
@@ -112,7 +122,6 @@ public class ReceiverActivity extends AppCompatActivity implements AdapterView.O
                     }
                 }
                 receivedMails.clear();
-                preMails=application.getMailList();
                 for(Mail mail:preMails){
                     if(mail.getDeleted()==null||mail.getDeleted()!=true){
 
@@ -145,7 +154,7 @@ public class ReceiverActivity extends AppCompatActivity implements AdapterView.O
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         switch (adapterView.getId()) {
-            case R.id.rlv:
+            case R.id.rlv_rec:
                 Mail curMail = (Mail) adapterView.getItemAtPosition(i);
                 Intent intent = new Intent(ReceiverActivity.this, DetailsActivity.class);
                 intent.putExtra("content", curMail.getBody());
@@ -181,13 +190,13 @@ public class ReceiverActivity extends AppCompatActivity implements AdapterView.O
             MyListViewHolder viewHolder;
 
             if (view == null) {
-                view = View.inflate(ReceiverActivity.this, R.layout.list_item, null);
+                view = View.inflate(ReceiverActivity.this, R.layout.item_receiver_email, null);
                 viewHolder = new MyListViewHolder();
                 viewHolder.sender_name = view.findViewById(R.id.sender_name);
                 viewHolder.subject = view.findViewById(R.id.subject);
                 viewHolder.content = view.findViewById(R.id.content);
                 viewHolder.receiverDate = view.findViewById(R.id.receiverDate);
-                viewHolder.deleteButton = view.findViewById(R.id.delete_button);  // 获取删除按钮
+                viewHolder.deleteButton = view.findViewById(R.id.deleteButton);  // 获取删除按钮
                 view.setTag(viewHolder);
             } else {
                 viewHolder = (MyListViewHolder) view.getTag();
@@ -221,14 +230,14 @@ public class ReceiverActivity extends AppCompatActivity implements AdapterView.O
     private void deleteMail(int i) {
 
         Mail mail = mailList.get(i);
-        System.out.println("i");
-        System.out.println(mail);
         mailList.remove(i);  // 从列表中移除邮件
         int mid = mail.getMid();
         mail.setDeleted(true);  // 标记邮件为删除
+        System.out.println(i);
+        System.out.println(mail);
         MyApplication application = (MyApplication) getApplicationContext();
         List<Mail> appMailList = application.getMailList();
-        appMailList.set(i, mail);  // 更新 MyApplication 中的邮件状态
+        appMailList.set(mid, mail);  // 更新 MyApplication 中的邮件状态
         new Thread(new Runnable() {
             @Override
             public void run() {

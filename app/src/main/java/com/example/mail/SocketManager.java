@@ -136,7 +136,7 @@ public class SocketManager {
 
     // 关闭 SMTP 连接
     public void closeSmtpConnection() {
-        closeConnection(smtpSocket, smtpReader, smtpWriter);
+        closeSmtpConnection(smtpSocket, smtpReader, smtpWriter);
         isSmtpConnected = false;
     }
 
@@ -145,6 +145,19 @@ public class SocketManager {
         try {
             if (socket != null && !socket.isClosed()) {
                 sendPop3Command("QUIT");
+                if (reader != null) reader.close();
+                if (writer != null) writer.close();
+                socket.close();
+                Log.d(TAG, "连接已关闭");
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "关闭连接失败: " + e.getMessage());
+        }
+    }
+    private void closeSmtpConnection(Socket socket, BufferedReader reader, PrintWriter writer) {
+        try {
+            if (socket != null && !socket.isClosed()) {
+                sendSmtpCommand("QUIT");
                 if (reader != null) reader.close();
                 if (writer != null) writer.close();
                 socket.close();

@@ -35,7 +35,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
 public class AddActivity extends AppCompatActivity {
 
 
@@ -47,6 +46,7 @@ public class AddActivity extends AppCompatActivity {
     private TextView tvFrom;
     private TextView tvFromAccount;
     private Button btSubmit;
+    private TextView btReturn;
     Handler handler;
     private String ip;
 
@@ -65,6 +65,7 @@ public class AddActivity extends AppCompatActivity {
         tvFrom = findViewById(R.id.from_account);
         tvFromAccount= findViewById(R.id.from_add);
         btSubmit = findViewById(R.id.submit);
+        btReturn = findViewById(R.id.returnbtn);
 
         MyApplication application = (MyApplication) this.getApplicationContext();
         ip = application.getNumber();
@@ -100,8 +101,12 @@ public class AddActivity extends AppCompatActivity {
         tvFromAccount.setText(util.readString("username"));
 
         btSubmit.setOnClickListener(this::submit);
-
-
+        btReturn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
 
@@ -109,7 +114,6 @@ public class AddActivity extends AppCompatActivity {
     public void submit(View v) {
 
         String senderAddress = tvFromAccount.getText().toString();
-
         String reciverAddress = etTo.getText().toString();
         String subject = etTitle.getText().toString();
         String content = etContent.getText().toString();

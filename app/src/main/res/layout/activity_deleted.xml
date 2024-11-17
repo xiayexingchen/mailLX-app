@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#F5F7FA"
-    tools:context="com.example.mail.SenderActivity">
+    tools:context="com.example.mail.DeletedActivity">
 
     <!-- 顶部操作栏 -->
     <LinearLayout
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="发件箱"
+            android:text="已删除"
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="#333333"/>
@@ -47,7 +47,7 @@
 
     <!-- 邮件列表 -->
     <ListView
-        android:id="@+id/rlv_send"
+        android:id="@+id/rlv_del"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="#E0E6ED"
@@ -57,6 +57,6 @@
         android:paddingHorizontal="16dp"
         android:clipToPadding="false"
         android:scrollbars="none"
-        tools:listitem="@layout/item_sender_email" />
+        tools:listitem="@layout/item_deleted_email" />
 
 </LinearLayout>

@@ -1,5 +1,6 @@
 package com.example.mail;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,39 +43,40 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class SenderActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
+public class DeletedActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
 
-    private List<Mail> mailList = new ArrayList<>();
+    private List<Mail> mailList = null;
     ListView lv;
     String userAddress;
     Handler handler;
-    private TextView btReturn;
     private String ip;
+    private TextView btReturn;
 
+    Pop3Helper pop3Helper = new Pop3Helper();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sender);
+        setContentView(R.layout.activity_deleted);
 
-        SharedPreferencesUtil util = SharedPreferencesUtil.getInstance(SenderActivity.this);
+        SharedPreferencesUtil util = SharedPreferencesUtil.getInstance(DeletedActivity.this);
         userAddress = util.readString("username");
 
         MyApplication application = (MyApplication) this.getApplicationContext();
         ip = application.getNumber();
+
         //找到控件
         btReturn = findViewById(R.id.returnbtn);
+
         handler = new Handler(Looper.getMainLooper()) {
             @SuppressLint("HandlerLeak")
             @Override
             public void handleMessage(Message msg) {
                 if (msg.what == 1) {
                     // 动态更新数据UI界面
-                    String str = msg.getData().getString("body") ;//获取值时相应的类型要对应，传入为String类型用getString；Int类型用getInt。
+                    String str = msg.getData().getString("body") + "";//获取值时相应的类型要对应，传入为String类型用getString；Int类型用getInt。
                     try {
-
                         Gson gson=new Gson();
-                        mailList =  gson.fromJson(str, new TypeToken<List<Mail>>(){}.getType());
-                        Log.d("SenderActivity", "mailList size: " + mailList.size());  // 打印 mailList 长度
+                        mailList = (List<Mail>) gson.fromJson(str, new TypeToken<List<Mail>>(){}.getType());
                         if(mailList.size()!=0) {
                             MyListDataAdapter adapter = new MyListDataAdapter();
                             lv.setAdapter(adapter);
@@ -88,12 +91,13 @@ public class SenderActivity extends AppCompatActivity implements AdapterView.OnI
         initData();
         freshData();
 
-        lv = findViewById(R.id.rlv_send);
+        lv = findViewById(R.id.rlv_del);
 
         lv.setOnItemClickListener(this);
 
         MyListDataAdapter adapter = new MyListDataAdapter();
         lv.setAdapter(adapter);
+
         btReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,40 +114,40 @@ public class SenderActivity extends AppCompatActivity implements AdapterView.OnI
 
         String ok = "获取成功";
         String err = "邮箱为空";
-        String empty = "空错误";
+        String empty = "已删除邮箱为空";
+        MyApplication application = (MyApplication) this.getApplicationContext();
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 FormBody.Builder params = new FormBody.Builder();
                 try {
-                    params.add("username", userAddress);
-                    String url = "http://10.0.2.2:8080/user/get-send-mails";
-                    Request request = new Request.Builder()
-                            .url(url)
-                            .post(params.build())
-                            .build();
+// 获取邮件列表
+                    List<Mail> preMails = new ArrayList<>();
+                    preMails= application.getMailList();
+                    Log.d("ReceiverActivity_dh", "Pre mails: " + preMails);
 
-                    OkHttpClient httpClient = new OkHttpClient();
-                    Response response = httpClient.newCall(request).execute();
-                    String MyResult = response.body().string();
-                    JSONObject jsonObject1 = new JSONObject(MyResult);
-                    int code = jsonObject1.getInt("state");
-                    System.out.println(code);
-                    if (code == 200) {
-                        Gson gson=new Gson();
-                        mailList = (List<Mail>) gson.fromJson(jsonObject1.getString("body"), new TypeToken<List<Mail>>(){}.getType());
-                        System.out.println(mailList);
-                        Message msg = new Message();//创建信使（很形象的理解）
-                        msg.what = 1;//给信使做标记
-                        Bundle bundle = new Bundle();//创建放数据的容器
+                    List<Mail> receivedMails = new ArrayList<>();
+                    for(Mail mail:preMails){
+                        if(mail.getDeleted()!=null&&mail.getDeleted()==true){
 
-                        bundle.putString("body", jsonObject1.getString("body"));
+                            receivedMails.add(mail);
+                        }
+                    }
+                    Log.d("ReceiverActivity_dh", "mails: " + receivedMails);
+                    // 处理邮件列表
+                    if (receivedMails != null && !receivedMails.isEmpty()) {
+                        Message msg = new Message();
+                        msg.what = 1;  // 给信使做标记
+                        Bundle bundle = new Bundle();
+                        bundle.putString("body", new Gson().toJson(receivedMails));
                         msg.setData(bundle);
-                        handler.sendMessage(msg);	// handler传递参数
+                        handler.sendMessage(msg);  // handler传递参数
                     } else {
                         Looper.prepare();
-                        Toast.makeText(getApplicationContext(), err, Toast.LENGTH_SHORT).show();
+                        runOnUiThread(() -> {
+                            Toast.makeText(getApplicationContext(), empty, Toast.LENGTH_SHORT).show();
+                        });
                         Looper.loop();
                     }
                 } catch (Exception e) {
@@ -158,9 +162,9 @@ public class SenderActivity extends AppCompatActivity implements AdapterView.OnI
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         switch (adapterView.getId()) {
-            case R.id.rlv_send:
+            case R.id.rlv_del:
                 Mail curMail = (Mail) adapterView.getItemAtPosition(i);
-                Intent intent = new Intent(SenderActivity.this,DetailsActivity.class);
+                Intent intent = new Intent(DeletedActivity.this,DetailsActivity.class);
                 intent.putExtra("content",curMail.getBody());
                 intent.putExtra("from",curMail.getSenderEmail());
                 intent.putExtra("to",curMail.getReceiverEmail());
@@ -194,12 +198,13 @@ public class SenderActivity extends AppCompatActivity implements AdapterView.OnI
         public View getView(int i, View view, ViewGroup viewGroup) {
             MyListViewHolder viewHolder;
             if (view == null) {
-                view = View.inflate(SenderActivity.this, R.layout.item_sender_email, null);
+                view = View.inflate(DeletedActivity.this, R.layout.item_deleted_email, null);
                 viewHolder = new MyListViewHolder();;
                 viewHolder.sender_name = view.findViewById(R.id.sender_name);
                 viewHolder.subject = view.findViewById(R.id.subject);
                 viewHolder.content= view.findViewById(R.id.content);
                 viewHolder.receiverDate = view.findViewById(R.id.receiverDate);
+                viewHolder.restoreButton=view.findViewById(R.id.restoreButton);
                 view.setTag(viewHolder);
             } else {
                 viewHolder = (MyListViewHolder) view.getTag();
@@ -212,12 +217,64 @@ public class SenderActivity extends AppCompatActivity implements AdapterView.OnI
             viewHolder.content.setText(mail.getBody());
             viewHolder.receiverDate.setText(mail.getSendTime().toString());
 
+            // 设置恢复按钮的点击事件
+            viewHolder.restoreButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    restoreMail(i);  // 调用删除邮件的方法
+                }
+            });
             return view;
         }
 
+
+
         class MyListViewHolder {
             TextView sender_name, subject, receiverDate,content;
+            Button restoreButton;
         }
+    }
+    private void restoreMail(int i) {
+
+        Mail mail = mailList.get(i);
+        mailList.remove(i);  // 从列表中移除邮件
+        int mid = mail.getMid();
+        mail.setDeleted(false);  // 标记邮件为删除
+        System.out.println(i);
+        System.out.println(mail);
+        MyApplication application = (MyApplication) getApplicationContext();
+        List<Mail> appMailList = application.getMailList();
+        appMailList.set(mid, mail);  // 更新 MyApplication 中的邮件状态
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                boolean sendSuccessful = false;
+                try {
+                    sendSuccessful = pop3Helper.restMail(mid);
+                    if (sendSuccessful) {
+                        Looper.prepare();
+                        runOnUiThread(() -> {
+                            Toast.makeText(getApplicationContext(), "邮件已恢复", Toast.LENGTH_SHORT).show();
+                        });
+                        Looper.loop();
+                    } else {
+                        Looper.prepare();
+                        runOnUiThread(() -> {
+                            Toast.makeText(getApplicationContext(), "邮件恢复失败", Toast.LENGTH_SHORT).show();
+                        });
+                        Looper.loop();
+                    }
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }).start();
+
+        DeletedActivity.MyListDataAdapter adapter = (DeletedActivity.MyListDataAdapter) lv.getAdapter();
+        adapter.notifyDataSetChanged();  // 刷新 ListView
+        Toast.makeText(getApplicationContext(), "刷新成功！", Toast.LENGTH_SHORT).show();  // 显示删除成功的提示
     }
 
 
