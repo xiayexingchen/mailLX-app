@@ -107,7 +107,9 @@ public class AddActivity extends AppCompatActivity {
 
 
     public void submit(View v) {
+
         String senderAddress = tvFromAccount.getText().toString();
+
         String reciverAddress = etTo.getText().toString();
         String subject = etTitle.getText().toString();
         String content = etContent.getText().toString();
@@ -117,28 +119,21 @@ public class AddActivity extends AppCompatActivity {
         String empty = "空错误";
         SharedPreferencesUtil util = SharedPreferencesUtil.getInstance(AddActivity.this);
         String account = util.readString("username");
+        String password = util.readString("password");
         new Thread(new Runnable() {
             @Override
             public void run() {
-                FormBody.Builder params = new FormBody.Builder();
+                Mail mail = new Mail(senderAddress, reciverAddress, null, subject, content);
+                SmtpHelper smtpHelper = new SmtpHelper();
                 try {
-                    params.add("senderAddress", senderAddress);
-                    params.add("reciverAddress", reciverAddress);
-                    params.add("subject", subject);
-                    params.add("content", content);
-                    String url = "http://10.0.2.2:8080/user/add-mail";
-                    Request request = new Request.Builder()
-                            .url(url)
-                            .post(params.build())
-                            .build();
 
-                    OkHttpClient httpClient = new OkHttpClient();
-                    Response response = httpClient.newCall(request).execute();
-                    String MyResult = response.body().string();
-                    JSONObject jsonObject1 = new JSONObject(MyResult);
-                    int code = jsonObject1.getInt("state");
-                    System.out.println(code);
-                    if (code == 200) {
+                    boolean sendSuccessful=false;
+                    if(smtpHelper.connectToSmtp("10.0.2.2", 25)&&smtpHelper.login(account, password))
+                    {
+                        sendSuccessful = smtpHelper.sendEmail(mail);
+
+                    }
+                    if (sendSuccessful) {
                         Intent intent = new Intent(AddActivity.this, HomeActivity.class);
                         startActivity(intent);
                         Looper.prepare();

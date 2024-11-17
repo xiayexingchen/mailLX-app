@@ -6,7 +6,7 @@ public class Mail {
     private Integer mid;
     private String senderEmail;
     private String receiverEmail;
-    private Timestamp sendTime;
+    private String sendTime;
     private String subject;
     private String body;
     private Boolean read;
@@ -20,12 +20,13 @@ public class Mail {
     public Mail() {
     }
 
-    public Mail(String senderAddress, String reciverAddress, Timestamp mailDate, String subject, String content) {
+    public Mail(String senderAddress, String reciverAddress, String mailDate, String subject, String content) {
         this.senderEmail = senderAddress;
         this.receiverEmail = reciverAddress;
         this.sendTime = mailDate;
         this.subject = subject;
         this.body = content;
+
     }
 
     public Integer getMid() {
@@ -52,11 +53,11 @@ public class Mail {
         this.receiverEmail = receiverEmail;
     }
 
-    public Timestamp getSendTime() {
+    public String getSendTime() {
         return sendTime;
     }
 
-    public void setSendTime(Timestamp sendTime) {
+    public void setSendTime(String sendTime) {
         this.sendTime = sendTime;
     }
 

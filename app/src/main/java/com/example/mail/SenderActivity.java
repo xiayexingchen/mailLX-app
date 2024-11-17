@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -42,7 +43,7 @@ import okhttp3.Response;
 
 public class SenderActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
 
-    private List<Mail> mailList = null;
+    private List<Mail> mailList = new ArrayList<>();
     ListView lv;
     String userAddress;
     Handler handler;
@@ -65,10 +66,12 @@ public class SenderActivity extends AppCompatActivity implements AdapterView.OnI
             public void handleMessage(Message msg) {
                 if (msg.what == 1) {
                     // 动态更新数据UI界面
-                    String str = msg.getData().getString("body") + "";//获取值时相应的类型要对应，传入为String类型用getString；Int类型用getInt。
+                    String str = msg.getData().getString("body") ;//获取值时相应的类型要对应，传入为String类型用getString；Int类型用getInt。
                     try {
+
                         Gson gson=new Gson();
-                        mailList = (List<Mail>) gson.fromJson(str, new TypeToken<List<Mail>>(){}.getType());
+                        mailList =  gson.fromJson(str, new TypeToken<List<Mail>>(){}.getType());
+                        Log.d("SenderActivity", "mailList size: " + mailList.size());  // 打印 mailList 长度
                         if(mailList.size()!=0) {
                             MyListDataAdapter adapter = new MyListDataAdapter();
                             lv.setAdapter(adapter);
@@ -108,7 +111,7 @@ public class SenderActivity extends AppCompatActivity implements AdapterView.OnI
                 FormBody.Builder params = new FormBody.Builder();
                 try {
                     params.add("username", userAddress);
-                    String url = "http://110.0.2.2:8080/user/get-send-mails";
+                    String url = "http://10.0.2.2:8080/user/get-send-mails";
                     Request request = new Request.Builder()
                             .url(url)
                             .post(params.build())
@@ -128,7 +131,7 @@ public class SenderActivity extends AppCompatActivity implements AdapterView.OnI
                         msg.what = 1;//给信使做标记
                         Bundle bundle = new Bundle();//创建放数据的容器
 
-                        bundle.putString("body", MyResult);
+                        bundle.putString("body", jsonObject1.getString("body"));
                         msg.setData(bundle);
                         handler.sendMessage(msg);	// handler传递参数
                     } else {
