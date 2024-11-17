@@ -22,7 +22,7 @@
             android:layout_height="80dp"
             android:layout_gravity="center"
             android:src="@android:drawable/ic_dialog_email"
-            android:tint="#1E88E5" />
+            app:tint="#1E88E5" />
 
         <TextView
             android:id="@+id/TitleText"
@@ -86,7 +86,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="16dp"
                     android:src="@android:drawable/ic_lock_idle_lock"
-                    android:tint="#1E88E5" />
+                    app:tint="#1E88E5" />
 
                 <EditText
                     android:id="@+id/PassWordEdit"

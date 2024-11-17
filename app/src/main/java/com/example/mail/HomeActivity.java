@@ -36,6 +36,7 @@ import okhttp3.Response;
 
 public class HomeActivity extends AppCompatActivity {
 
+    //lh-本类纯跳转，可直接替换
     private TextView userEmail;
     private LinearLayout writeEmailLayout;
     private LinearLayout inboxLayout;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,7 +8,6 @@
     android:orientation="vertical"
     android:background="#F5F7FA"
     tools:context="com.example.mail.InfoActivoty">
-
     <!-- 顶部操作栏 -->
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,7 +24,7 @@
             android:layout_weight="0.3"
             android:text="返回"
             android:textSize="16sp"
-            android:textColor="#333333"/>
+            android:textColor="#333333" />
 
         <TextView
             android:layout_width="0dp"
@@ -35,107 +34,113 @@
             android:text="个人信息"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="#333333"/>
+            android:textColor="#333333" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="36dp"
             android:text=""
             android:textColor="#0069ff"
-            style="@style/Widget.MaterialComponents.Button"/>
+            style="@style/Widget.MaterialComponents.Button" />
     </LinearLayout>
-
-  <!-- 信息内容区域 -->
-  <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:orientation="vertical"
-      android:padding="16dp">
-
-    <!-- 邮箱 -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="邮箱"
-        android:textColor="#7F8C8D"
-        android:textSize="14sp" />
-
-    <EditText
-        android:id="@+id/baccount"
+    <!-- 信息内容区域 -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@color/white"
-        android:padding="12dp"
-        android:textSize="16sp"
-        android:textColor="#2C3E50"
-        android:enabled="false" />
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <!-- 密码 -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="密码"
-        android:textColor="#7F8C8D"
-        android:textSize="14sp" />
+        <!-- 邮箱 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="邮箱"
+            android:textColor="#7F8C8D"
+            android:textSize="14sp" />
 
-    <EditText
-        android:id="@+id/bpassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@color/white"
-        android:padding="12dp"
-        android:textSize="16sp"
-        android:inputType="textPassword" />
+        <EditText
+            android:id="@+id/baccount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@color/white"
+            android:padding="12dp"
+            android:textSize="16sp"
+            android:textColor="#2C3E50"
+            android:enabled="false" />
 
-    <!-- 昵称 -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="昵称"
-        android:textColor="#7F8C8D"
-        android:textSize="14sp" />
+        <!-- 密码 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="密码"
+            android:textColor="#7F8C8D"
+            android:textSize="14sp" />
 
-    <EditText
-        android:id="@+id/bnickname"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@color/white"
-        android:padding="12dp"
-        android:textSize="16sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@color/white">
 
-    <!-- 邮箱授权码 -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="邮箱授权码"
-        android:textColor="#7F8C8D"
-        android:textSize="14sp" />
+            <EditText
+                android:id="@+id/bpassword"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:padding="12dp"
+                android:textSize="16sp"
+                android:textColor="#2C3E50"
+                android:inputType="textPassword" />
 
-    <EditText
-        android:id="@+id/bauthorization"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@color/white"
-        android:padding="12dp"
-        android:textSize="16sp" />
+            <ImageButton
+                android:id="@+id/editPasswordBtn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_menu_edit"
+                android:padding="8dp"
+                app:tint="#7F8C8D" />
+            </LinearLayout>
 
-    <!-- 修改按钮 -->
-    <Button
-        android:id="@+id/changeinfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:backgroundTint="#2196F3"
-        android:text="保存修改"
-        android:textColor="@color/white"
-        android:textSize="16sp" />
+            <!-- 确认密码（默认隐藏） -->
+            <TextView
+                android:id="@+id/confirmPasswordLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="确认密码"
+                android:textColor="#7F8C8D"
+                android:textSize="14sp"
+                android:visibility="gone" />
 
-  </LinearLayout>
-</LinearLayout>
+            <EditText
+                android:id="@+id/ackBpassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@color/white"
+                android:padding="12dp"
+                android:textSize="16sp"
+                android:textColor="#2C3E50"
+                android:inputType="textPassword"
+                android:visibility="gone" />
+
+            <!-- 修改按钮（默认隐藏） -->
+            <Button
+                android:id="@+id/changeinfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:backgroundTint="#2196F3"
+                android:text="保存修改"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:visibility="gone" />
+
+        </LinearLayout>
+    </LinearLayout>

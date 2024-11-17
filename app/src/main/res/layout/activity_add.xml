@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F5F5F5"
+    android:background="@color/white"
     tools:context="com.example.mail.AddActivity">
 
   <!-- 顶部操作栏 -->
@@ -36,10 +36,11 @@
         android:textStyle="bold"
         android:textColor="#333333"/>
 
-    <TextView
+    <Button
         android:id="@+id/submit"
         android:layout_width="wrap_content"
         android:layout_height="36dp"
+        android:background="@android:color/transparent"
         android:text="发送"
         android:textColor="#0069ff"
         style="@style/Widget.MaterialComponents.Button"/>
@@ -63,12 +64,11 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="收件人："
-          android:textColor="#333333"
+          android:textColor="#7B7D7D"
           android:textSize="15sp"/>
 
       <EditText
           android:id="@+id/to_add"
-          android:hint="收件人邮箱"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:background="@null"
@@ -94,7 +94,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="发件人："
-          android:textColor="#333333"
+          android:textColor="#7B7D7D"
           android:textSize="15sp"/>
 
       <TextView
@@ -132,12 +132,11 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="主题："
-          android:textColor="#333333"
+          android:textColor="#7B7D7D"
           android:textSize="15sp"/>
 
       <EditText
           android:id="@+id/et_title"
-          android:hint="邮件主题"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:background="@null"

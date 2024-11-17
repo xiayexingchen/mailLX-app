@@ -22,14 +22,22 @@ import com.example.mail.entity.Mail;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.FormBody;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class SenderActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
@@ -39,7 +47,7 @@ public class SenderActivity extends AppCompatActivity implements AdapterView.OnI
     String userAddress;
     Handler handler;
     private String ip;
-
+    private TextView btReturn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +59,8 @@ public class SenderActivity extends AppCompatActivity implements AdapterView.OnI
         MyApplication application = (MyApplication) this.getApplicationContext();
         ip = application.getNumber();
 
+        //找到控件
+        btReturn = findViewById(R.id.returnbtn);
         handler = new Handler(Looper.getMainLooper()) {
             @SuppressLint("HandlerLeak")
             @Override
@@ -82,6 +92,12 @@ public class SenderActivity extends AppCompatActivity implements AdapterView.OnI
         MyListDataAdapter adapter = new MyListDataAdapter();
         lv.setAdapter(adapter);
 
+        btReturn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void initData() {
@@ -100,7 +116,7 @@ public class SenderActivity extends AppCompatActivity implements AdapterView.OnI
                 FormBody.Builder params = new FormBody.Builder();
                 try {
                     params.add("username", userAddress);
-                    String url = "http://10.72.11.179:8080/user/get-send-mails";
+                    String url = "http://"+ip+"/user/get-send-mails";
                     Request request = new Request.Builder()
                             .url(url)
                             .post(params.build())

@@ -48,12 +48,12 @@ public class Mail {
         return receiverEmail;
     }
 
-    public void setReceiverEmail(String receiverEmail) {
+    public void setRecegetSendTimeiverEmail(String receiverEmail) {
         this.receiverEmail = receiverEmail;
     }
 
     public Timestamp getSendTime() {
-        return sendTime;
+        return  sendTime;
     }
 
     public void setSendTime(Timestamp sendTime) {

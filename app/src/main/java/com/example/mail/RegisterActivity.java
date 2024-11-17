@@ -51,6 +51,8 @@ public class RegisterActivity extends AppCompatActivity {
         edtRePassword = findViewById(R.id.PassWordAgainEdit);
 
         MyApplication application = (MyApplication) this.getApplicationContext();
+        //lh-add setnumber
+        application.setNumber("10.0.2.2:8080");
         ip = application.getNumber();
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
