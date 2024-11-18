@@ -46,8 +46,6 @@ public class InfoActivoty extends AppCompatActivity {
     private EditText baccount;
     private EditText bpassword;
     private EditText ackBpassword;
-    private EditText bnickname;
-    private EditText bauthorization;
     private Button changeinfo;
     private TextView returnbtn;
     private ImageButton editPasswordBtn;
@@ -70,16 +68,12 @@ public class InfoActivoty extends AppCompatActivity {
         initHandler();
         // 设置点击事件
         setClickListeners();
-        // 获取用户信息
-        getUserInfo();
     }
 
     private void initViews() {
         baccount = findViewById(R.id.baccount);
         bpassword = findViewById(R.id.bpassword);
         ackBpassword = findViewById(R.id.ackBpassword);
-        // bnickname = findViewById(R.id.bnickname);
-        // bauthorization = findViewById(R.id.bauthorization);
         changeinfo = findViewById(R.id.changeinfo);
         returnbtn = findViewById(R.id.returnbtn);
         editPasswordBtn = findViewById(R.id.editPasswordBtn);
@@ -93,7 +87,7 @@ public class InfoActivoty extends AppCompatActivity {
         //初状态显示
         SharedPreferencesUtil util = SharedPreferencesUtil.getInstance(InfoActivoty.this);
         baccount.setText(util.readString("username"));
-        //bpassword.setText();
+        bpassword.setText("username");
     }
 
     private void initHandler() {
@@ -139,58 +133,14 @@ public class InfoActivoty extends AppCompatActivity {
     private void updateUI(User user) {
         baccount.setText(user.getAccount());
         bpassword.setText(user.getPassword());
-        bnickname.setText(user.getNickName());
-        bauthorization.setText(user.getAuthorizationCode());
     }
 
-    private void getUserInfo() {
-        SharedPreferencesUtil util = SharedPreferencesUtil.getInstance(this);
-        //   String account = util.readString("user");
-        String accountAll = util.readString("username");
-        String account = accountAll.split("@")[0];
-        new Thread(() -> {
-            try {
-                MediaType JSON = MediaType.parse("application/json;charset=utf-8");
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("account", account);
 
-                OkHttpClient client = new OkHttpClient();
-                RequestBody requestBody = RequestBody.create(JSON, jsonObject.toString());
-                Request request = new Request.Builder()
-                        .url("http://" + ip + "/people/queryPeopleMsg")
-                        .post(requestBody)
-                        .build();
-
-                client.newCall(request).enqueue(new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        runOnUiThread(() -> Toast.makeText(InfoActivoty.this,
-                                "网络错误", Toast.LENGTH_SHORT).show());
-                    }
-
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        String result = response.body().string();
-                        Message msg = new Message();
-                        msg.what = 1;
-                        Bundle bundle = new Bundle();
-                        bundle.putString("res", result);
-                        msg.setData(bundle);
-                        handler.sendMessage(msg);
-                    }
-                });
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }).start();
-    }
 
     private void updateUserInfo(View v) {
         String account = baccount.getText().toString();
         String password = bpassword.getText().toString();
         String confirmPassword = ackBpassword.getText().toString();
-        String nickname = bnickname.getText().toString();
-        String authorizationCode = bauthorization.getText().toString();
 
         // 验证密码
         if (ackBpassword.getVisibility() == View.VISIBLE && !password.equals(confirmPassword)) {
@@ -204,8 +154,6 @@ public class InfoActivoty extends AppCompatActivity {
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("account", account);
                 jsonObject.put("password", password);
-                jsonObject.put("nickName", nickname);
-                jsonObject.put("authorizationCode", authorizationCode);
 
                 OkHttpClient client = new OkHttpClient();
                 RequestBody requestBody = RequestBody.create(JSON, jsonObject.toString());
