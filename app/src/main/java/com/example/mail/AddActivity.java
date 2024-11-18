@@ -132,7 +132,7 @@ public class AddActivity extends AppCompatActivity {
                 try {
 
                     boolean sendSuccessful=false;
-                    if(smtpHelper.connectToSmtp("10.0.2.2", 25)&&smtpHelper.login(account, password))
+                    if(smtpHelper.connectToSmtp("116.62.139.92", 25)&&smtpHelper.login(account, password))
                     {
                         sendSuccessful = smtpHelper.sendEmail(mail);
 

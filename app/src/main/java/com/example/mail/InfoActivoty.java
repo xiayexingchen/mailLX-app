@@ -158,7 +158,7 @@ public class InfoActivoty extends AppCompatActivity {
                 OkHttpClient client = new OkHttpClient();
                 RequestBody requestBody = RequestBody.create(JSON, jsonObject.toString());
                 Request request = new Request.Builder()
-                        .url("http://" + "10.0.2.2:8080" + "/update-password")
+                        .url("http://" + "116.62.139.92:8080" + "/update-password")
                         .post(requestBody)
                         .build();
 

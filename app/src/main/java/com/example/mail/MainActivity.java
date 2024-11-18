@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 // 使用 Pop3Helper 进行 POP3 登录
                 Pop3Helper pop3Helper = new Pop3Helper();
                 SmtpHelper smtpHelper = new SmtpHelper();
-                String url = "http://10.0.2.2:8080/user/get-server-msg";
+                String url = "http://116.62.139.92:8080/user/get-server-msg";
                 Request request = new Request.Builder()
                         .url(url)
                         .get()
@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
                 else {
                     int pop3Port = application.getPop3Port();
                     // 连接到 POP3 服务器
-                    if (pop3Helper.connectToPop3("10.0.2.2", pop3Port)) {
+                    if (pop3Helper.connectToPop3("116.62.139.92", pop3Port)) {
                         // 使用 POP3 登录验证
                         String loginSuccessful = pop3Helper.login(account, password);
 
