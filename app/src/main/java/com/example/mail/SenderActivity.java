@@ -207,11 +207,11 @@ public class SenderActivity extends AppCompatActivity implements AdapterView.OnI
 
             Mail mail = mailList.get(i);
             System.out.println(mail);
-            viewHolder.sender_name.setText(mail.getSenderEmail());
+            viewHolder.sender_name.setText(mail.getReceiverEmail());
             viewHolder.subject.setText(mail.getSubject());
             viewHolder.content.setText(mail.getBody());
+            //viewHolder.receiverDate.setText(mail.getSendTime().toString());
             viewHolder.receiverDate.setText(mail.getSendTime().toString());
-
             return view;
         }
 

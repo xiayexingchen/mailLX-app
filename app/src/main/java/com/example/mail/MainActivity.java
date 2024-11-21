@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void login(View v) {
         // 获取输入的账户和密码
-        String account = etAccount.getText().toString();
+        String account = etAccount.getText().toString()+"@cmail.com";
         String password = etPassword.getText().toString();
         MyApplication application = (MyApplication) this.getApplicationContext();
         String ok = "登录成功";

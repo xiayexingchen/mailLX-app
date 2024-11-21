@@ -67,7 +67,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void register(View v) {
         //获取输入的账户和密码
-        String account = edtEmail.getText().toString();
+        String account = edtEmail.getText().toString()+"@cmail.com";
         String password = edtPassword.getText().toString();
         String ackPassword = edtRePassword.getText().toString();
 

@@ -94,6 +94,9 @@ public class AddActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
+                if(msg.what ==2){
+                    finish();
+                }
             }
         };
 
@@ -117,6 +120,7 @@ public class AddActivity extends AppCompatActivity {
         String reciverAddress = etTo.getText().toString();
         String subject = etTitle.getText().toString();
         String content = etContent.getText().toString();
+        MyApplication application = (MyApplication) this.getApplicationContext();
 
         String ok = "发送成功";
         String err = "发送失败";
@@ -132,14 +136,28 @@ public class AddActivity extends AppCompatActivity {
                 try {
 
                     boolean sendSuccessful=false;
-                    if(smtpHelper.connectToSmtp("116.62.139.92", 25)&&smtpHelper.login(account, password))
+                    if(application.isSmtpServer()!=null&&application.isSmtpServer().equals("false")) {
+
+                    runOnUiThread(() -> {
+                       Toast.makeText(getApplicationContext(), "请先开启SMTP服务器", Toast.LENGTH_SHORT).show();
+                       });
+                    }
+                    int smtpPort = application.getStmpPort();
+                    System.out.println(smtpPort);
+                    if(smtpHelper.connectToSmtp("116.62.139.92", smtpPort)&&smtpHelper.login(account, password))
                     {
                         sendSuccessful = smtpHelper.sendEmail(mail);
 
                     }
                     if (sendSuccessful) {
-                        Intent intent = new Intent(AddActivity.this, HomeActivity.class);
-                        startActivity(intent);
+                        //finish();
+                        //修改如下：提交成功后的逻辑为创建信使，交给主线程结束页面
+                         Message msg1 = new Message();//创建信使（很形象的理解）
+                            msg1.what = 2;//给信使做标记
+                            Bundle bundle = new Bundle();//创建放数据的容器
+                            handler.sendMessage(msg1);	// handler传递参数
+//                        Intent intent = new Intent(AddActivity.this, HomeActivity.class);
+//                        startActivity(intent);
                         Looper.prepare();
                         Toast.makeText(getApplicationContext(), ok, Toast.LENGTH_SHORT).show();
                         Looper.loop();

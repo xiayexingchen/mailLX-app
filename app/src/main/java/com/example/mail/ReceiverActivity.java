@@ -28,6 +28,8 @@ import com.google.gson.reflect.TypeToken;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -109,6 +111,7 @@ import java.util.List;
                 // 获取邮件列表
 
                 List<Mail> receivedMails = pop3Helper.getMailList();
+                // 使用 Comparator 对邮件列表按 sendTime 字符串从小到大排序
                 List<Mail> preMails = new ArrayList<>();
                 preMails= application.getMailList();
                 Log.d("ReceiverActivity", "Pre mails: " + preMails);
@@ -121,6 +124,7 @@ import java.util.List;
                            application.addMail(mail);
                     }
                 }
+                preMails= application.getMailList();
                 receivedMails.clear();
                 for(Mail mail:preMails){
                     if(mail.getDeleted()==null||mail.getDeleted()!=true){
@@ -128,6 +132,12 @@ import java.util.List;
                         receivedMails.add(mail);
                     }
                 }
+                Collections.sort(receivedMails, new Comparator<Mail>() {
+                    @Override
+                    public int compare(Mail mail1, Mail mail2) {
+                        return mail2.getSendTime().compareTo(mail1.getSendTime());
+                    }
+                });
 
                 Log.d("ReceiverActivity", "Received mails: " + receivedMails);
 
@@ -206,7 +216,8 @@ import java.util.List;
             viewHolder.sender_name.setText(mail.getSenderEmail());
             viewHolder.subject.setText(mail.getSubject());
             viewHolder.content.setText(mail.getBody());
-            viewHolder.receiverDate.setText(mail.getReceiverEmail());
+            //viewHolder.receiverDate.setText(mail.getReceiverEmail());
+            viewHolder.receiverDate.setText(mail.getSendTime().toString());
 
             // 设置删除按钮的点击事件
             viewHolder.deleteButton.setOnClickListener(new View.OnClickListener() {
